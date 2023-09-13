@@ -4,6 +4,7 @@ import { UserEntity } from './entities/user.entity';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ReturnUserDTO } from './dtos/returnUser.dto';
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,9 @@ export class UserService {
     });
   }
 
-  async getAllUsers(): Promise<UserEntity[]> {
-    return this.userRepository.find();
+  async getAllUsers(): Promise<ReturnUserDTO[]> {
+    const users: UserEntity[] = await this.userRepository.find();
+    const usersDTO = users.map((UserEntity) => new ReturnUserDTO(UserEntity));
+    return usersDTO;
   }
 }
