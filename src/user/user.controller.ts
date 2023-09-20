@@ -23,6 +23,8 @@ export class UserController {
 
   @Get()
   async getAllUsers(): Promise<ReturnUserDTO[]> {
-    return this.userService.getAllUsers();
+    return (await this.userService.getAllUsers()).map(
+      (UserEntity) => new ReturnUserDTO(UserEntity),
+    );
   }
 }
